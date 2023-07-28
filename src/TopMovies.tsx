@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PostsType } from "./types/PostsType";
 import { Film } from "./types/PostsType";
 
-type PropPostType = {
-  posts: PostsType | undefined;
-  setClick: React.Dispatch<React.SetStateAction<number>>;
-};
+export default function TopMovies(): JSX.Element {
+  const [postsPopular, setPostsPopular] = useState<PostsType>();
+  const [clickPopular, setClickPopular] = useState<number>(0);
 
-export default function TopMovies({
-  posts,
-  setClick,
-}: PropPostType): JSX.Element {
+  const apiUrlP: string =
+    "https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_250_BEST_FILMS&page=1";
+  const apiKeyP: string = "a62f1360-78dc-496e-9b02-8d40001edcf4";
+
+  useEffect(() => {
+    fetch(`${apiUrlP}`, {
+      method: "GET",
+      headers: {
+        "X-API-KEY": apiKeyP,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setPostsPopular(json);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const rand: number = Math.round(1 - 0.5 + Math.random() * (20 - 1 + 1));
-  const post: Film | undefined = posts?.films.find(
-    (film) => film.filmId === rand
-  );
+  const post: Film | undefined = postsPopular?.films[rand];
 
   return (
     <div className="new">
@@ -48,14 +61,14 @@ export default function TopMovies({
                     <span>В ролях:</span>{" "}
                   </h3>
                   {post?.genres.map((person, i) =>
-                    i < 5 ? <h4> {person.genre}</h4> : null
+                    i < 5 ? <h4 key={i}> {person.genre}</h4> : null
                   )}
                 </div>
               </div>
             </div>
             <button
               className="button"
-              onClick={() => setClick((prev) => prev + 1)}
+              onClick={() => setClickPopular((prev) => prev + 1)}
             >
               {" "}
               СМЕНИТЬ{" "}

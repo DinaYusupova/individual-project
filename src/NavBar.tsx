@@ -14,7 +14,7 @@ function NavBar(): JSX.Element {
 
       <div className="menu">
         <div className="text"><a href="/">РАНДОМНОЕ</a></div>
-        {/* <div className="text"><a href="/popular">ПОЛУЛЯРНОЕ</a></div> */}
+        <div className="text"><a href="/popular">ПОЛУЛЯРНОЕ</a></div>
         <div className="text"></div>
       </div>
     </header>
